@@ -2,8 +2,8 @@ package com.javalog;
 
 import java.util.logging.*;
 public class Test {
+	private static final Logger log = Logger.getLogger(Test.class.toString());
 	public static void main(String[] args){
-		Logger log = Logger.getLogger(Test.class.toString());
 		// all→finest→finer→fine→config→info→warning→server→off  
         // 级别依次升高，后面的日志级别会屏蔽之前的级别  
         log.setLevel(Level.INFO);  

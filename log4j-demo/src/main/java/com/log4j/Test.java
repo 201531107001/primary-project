@@ -3,9 +3,9 @@ package com.log4j;
 
 import org.apache.log4j.Logger; 
 public class Test {
+	private static final Logger logger = Logger.getLogger(Test.class); 
 	
 	public static void main(String[] args){
-		Logger logger = Logger.getLogger(Test.class);  
         
         //使用默认的配置信息，不需要写log4j.properties  
         //BasicConfigurator.configure();  
