@@ -1,0 +1,4 @@
+[framework][23:19:00,377-com.log4j.Test.main(Test.java:16)][INFO]:this is an info 
+[framework][23:19:00,380-com.log4j.Test.main(Test.java:17)][WARN]:this is a warn 
+[framework][23:19:00,380-com.log4j.Test.main(Test.java:18)][ERROR]:this is an error 
+[framework][23:19:00,380-com.log4j.Test.main(Test.java:19)][FATAL]:this is a fatal 
