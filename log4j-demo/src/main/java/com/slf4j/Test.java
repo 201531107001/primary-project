@@ -19,7 +19,7 @@ public class Test {
 
 		// {}占位符记录日志
 		for (int i = 0; i < 3; i++) {
-			logger.debug("这是第{}条记录", i);
+			logger.debug("这是第{}条记录", i); 
 		}
 
 		// 用\转义{}
