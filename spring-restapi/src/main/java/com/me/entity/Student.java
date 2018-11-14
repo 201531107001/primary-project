@@ -3,8 +3,8 @@ package com.me.entity;
 public class Student {
 	int id;
 	private String name;
-	private int age;
-	private String date;
+	private Integer age;
+	private String birth;
 
 	public String getName() { 
 		return name;
@@ -14,26 +14,26 @@ public class Student {
 
 	}
 
-	public Student(String name, int age, String date) {
+	public Student(String name, int age, String birth) {
 		super();
 		this.name = name;
 		this.age = age;
-		this.date = date;
+		this.birth = birth;
 	}
 
-	public Student(int id, String name, int age, String date) {
+	public Student(Integer id, String name, int age, String birth) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.age = age;
-		this.date = date;
+		this.birth = birth;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -49,12 +49,12 @@ public class Student {
 		this.age = age;
 	}
 
-	public String getDate() {
-		return date;
+	public String getBirth() {
+		return birth;
 	}
 
-	public void setDate(String date) {
-		this.date = date;
+	public void setBirth(String date) {
+		this.birth = date;
 	}
 
 }

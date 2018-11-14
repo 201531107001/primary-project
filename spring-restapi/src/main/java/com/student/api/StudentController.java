@@ -45,7 +45,7 @@ public class StudentController {
 	
 	@PostMapping(value="/save",produces="application/json")
 	public ResponseEntity<Student> saveStudent(@RequestBody Student student,UriComponentsBuilder ucb){
-		student = studentDaoImpl.saveStudent(student);
+		student = studentDaoImpl.save(student);
 		System.out.println(student);
 		HttpHeaders headers = new HttpHeaders();
 		URI uri = ucb.path("/student/get/"+student.getId()).build().toUri();
