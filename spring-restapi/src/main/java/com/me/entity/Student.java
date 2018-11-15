@@ -1,9 +1,9 @@
 package com.me.entity;
 
 public class Student {
-	int id;
+	Integer id;
 	private String name;
-	private Integer age;
+	private int age;
 	private String birth;
 
 	public String getName() { 

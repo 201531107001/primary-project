@@ -28,10 +28,12 @@ public class StudentDaoImpl{
 		return jdbcOperations.query(sql, new Object[] {id}, new ResultSetExtractor<Student>() {
 
 			public Student extractData(ResultSet rSet) throws SQLException, DataAccessException {
-				try {
-					return new Student(rSet.getInt(1), rSet.getString(2), rSet.getInt(3), TimeUtils.getNormalYMDTime(rSet.getDate(4).getTime()));
-				} catch (SQLException e) {
-					e.printStackTrace();
+				if(rSet.next()){
+					try {
+						return new Student(rSet.getInt(1), rSet.getString(2), rSet.getInt(3), TimeUtils.getNormalYMDTime(rSet.getDate(4).getTime()));
+					} catch (SQLException e) {
+						e.printStackTrace();
+					}
 				}
 				return null;
 			}
@@ -41,12 +43,13 @@ public class StudentDaoImpl{
 
 	public Student save(Student student) {
 		Integer id = student.getId();
+		System.out.println(id);
 		if (id == null) {
-			id = insertSpitterAndReturnId(student);
+			id = insertStudentAndReturnId(student);
 			student.setId(id);
 			return student;
 		} else {
-			jdbcOperations.update("update student set name=?, age=?, birth=?",					
+			jdbcOperations.update("update student set name=?, age=?, birth=? where id = ?",					
 					student.getName(),
 					student.getAge(),
 					student.getBirth(),
@@ -55,7 +58,7 @@ public class StudentDaoImpl{
 		return student;
 	}
 	
-	private int insertSpitterAndReturnId(Student student) {
+	private int insertStudentAndReturnId(Student student) {
 		SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert((JdbcTemplate)jdbcOperations).withTableName("student");
 		jdbcInsert.setGeneratedKeyName("id");
 		Map<String, Object> args = new HashMap<String, Object>();
