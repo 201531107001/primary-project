@@ -34,8 +34,6 @@ public class StudentController {
 	@ResponseBody
 	public Student getStudent(@PathVariable int id){
 		
-		System.out.println(id);
-		
 		Student student = studentDaoImpl.getById(id);
 		if(student == null) {
 			throw new StudentNotFoundException(id);
@@ -46,7 +44,6 @@ public class StudentController {
 	@PostMapping(value="/save",produces="application/json")
 	public ResponseEntity<Student> saveStudent(@RequestBody Student student,UriComponentsBuilder ucb){
 		student = studentDaoImpl.save(student);
-		System.out.println(student);
 		HttpHeaders headers = new HttpHeaders();
 		URI uri = ucb.path("/student/get/"+student.getId()).build().toUri();
 		headers.setLocation(uri);

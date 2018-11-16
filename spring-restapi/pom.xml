@@ -127,6 +127,14 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.36</version>
 		</dependency>
+
+		<!-- cache包 -->
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache-core</artifactId>
+			<version>2.4.5</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<finalName>spring-restapi</finalName>

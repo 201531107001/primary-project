@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -23,8 +25,11 @@ public class StudentDaoImpl{
 	@Autowired
 	JdbcOperations jdbcOperations;
 	
+	@Cacheable(value="studentCache" , key="#root.args[0]")
 	public Student getById(int id) {
 		String sql = "select * from student where id = ?";
+		
+		System.out.println("≤È—Øid:"+id);
 		return jdbcOperations.query(sql, new Object[] {id}, new ResultSetExtractor<Student>() {
 
 			public Student extractData(ResultSet rSet) throws SQLException, DataAccessException {
@@ -41,9 +46,9 @@ public class StudentDaoImpl{
 		});
 	}
 
+	@CachePut(value="studentCache",key="#result.id")
 	public Student save(Student student) {
 		Integer id = student.getId();
-		System.out.println(id);
 		if (id == null) {
 			id = insertStudentAndReturnId(student);
 			student.setId(id);
