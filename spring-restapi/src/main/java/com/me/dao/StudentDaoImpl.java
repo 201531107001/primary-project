@@ -25,6 +25,11 @@ public class StudentDaoImpl{
 	@Autowired
 	JdbcOperations jdbcOperations;
 	
+	/**
+	 * 根据id查询学生。并加入缓存
+	 * @param id 
+	 * @return
+	 */
 	@Cacheable(value="studentCache" , key="#root.args[0]")
 	public Student getById(int id) {
 		String sql = "select * from student where id = ?";
@@ -46,6 +51,11 @@ public class StudentDaoImpl{
 		});
 	}
 
+	/**
+	 * 储存或更新学生
+	 * @param student
+	 * @return
+	 */
 	@CachePut(value="studentCache",key="#result.id")
 	public Student save(Student student) {
 		Integer id = student.getId();
@@ -63,6 +73,11 @@ public class StudentDaoImpl{
 		return student;
 	}
 	
+	/**
+	 * 插入学生并返回id
+	 * @param student
+	 * @return
+	 */
 	private int insertStudentAndReturnId(Student student) {
 		SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert((JdbcTemplate)jdbcOperations).withTableName("student");
 		jdbcInsert.setGeneratedKeyName("id");

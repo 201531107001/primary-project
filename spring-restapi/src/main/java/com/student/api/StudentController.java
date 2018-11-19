@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.me.dao.StudentDaoImpl;
 import com.me.entity.Student;
 import com.me.error.MyError;
 import com.me.exception.StudentNotFoundException;
+import com.me.service.StudentService;
 
 
 @RestController
@@ -28,13 +28,13 @@ import com.me.exception.StudentNotFoundException;
 public class StudentController {
 	
 	@Autowired
-	StudentDaoImpl studentDaoImpl; 
+	StudentService studentService; 
 	
 	@GetMapping(value="/get/{id}")
 	@ResponseBody
 	public Student getStudent(@PathVariable int id){
 		
-		Student student = studentDaoImpl.getById(id);
+		Student student = studentService.getById(id);
 		if(student == null) {
 			throw new StudentNotFoundException(id);
 		}
@@ -43,7 +43,7 @@ public class StudentController {
 	
 	@PostMapping(value="/save",produces="application/json")
 	public ResponseEntity<Student> saveStudent(@RequestBody Student student,UriComponentsBuilder ucb){
-		student = studentDaoImpl.save(student);
+		student = studentService.save(student);
 		HttpHeaders headers = new HttpHeaders();
 		URI uri = ucb.path("/student/get/"+student.getId()).build().toUri();
 		headers.setLocation(uri);
