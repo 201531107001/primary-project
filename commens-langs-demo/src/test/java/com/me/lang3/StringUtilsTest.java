@@ -115,5 +115,27 @@ public class StringUtilsTest {
 	public void testJoin(){
 		System.out.println(StringUtils.join(new String[]{"a","b","c"},","));
 	}
+	
+	//判断字符串是否为数字
+	@Test
+	public void testIsNumeric(){
+		
+		System.out.println(StringUtils.isNumeric("123"));
+	}
+	
+	@Test
+	public void testSplic(){
+		
+		String str = "a b c";
+		System.out.println(StringUtils.split(str)[1]);
+		
+		str = "a,b,c";
+		System.out.println(StringUtils.split(str,",")[1]);
+	}
+	
+	@Test
+	public void testContains(){
+		System.out.println(StringUtils.contains("abc", "a"));
+	}
 
 }
