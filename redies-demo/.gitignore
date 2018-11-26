@@ -1,1 +1,6 @@
-/target/
+/03_source/01_业务组件/commons-fy-znspgl-constants/java/*.gitignore
+/03_source/01_业务组件/commons-fy-znspgl-support/java/*.gitignore
+/03_source/02_智能审判管理/znspgl-ajxcpt/java/*.gitignore
+/03_source/02_智能审判管理/znspgl-ajxcpt/java/web/WEB-INF/*.gitignore
+/03_source/02_智能审判管理/znspgl/java/*.gitignore
+/03_source/02_智能审判管理/znspgl/java/web/WEB-INF/*.gitignore
