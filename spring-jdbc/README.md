@@ -1,6 +1,6 @@
-1.包含了spring jdbc
-2.包含了spring 的profile去使用不同的DataSource
-3.包含了spring的事务
+1.包含了spring jdbc<br>
+2.包含了spring 的profile去使用不同的DataSource<br>
+3.包含了spring的事务<br>
 
 事务的特性：原子性、一致性、隔离性、持久性
 
