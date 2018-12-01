@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="../js/vue.min.js"></script>
+<script src="../js/axios.min.js"></script>
+</head>
+<body>
+	<br>
+	<div id="studentList">
+		<div>
+			输入名字查询:<input type="text" id="select" /> <label @click="getByName"><input
+				type="button" value="查询"></label>
+		</div>
+		<ol>
+			<li v-for="(value, key, index)  in students">{{ index }}:{{ key }}:{{value}}</li>
+		</ol>
+	</div>
+	<script type="text/javascript">
+		window.onload = function() {
+			var vm = new Vue({
+				el : '#studentList',
+				data : {
+					students:[]
+				},
+				//vue对象实例创建成功之后就会自动调用这个方法
+		        //如果你想写的方法在初始化的时候就被调用的话就要要用到created这个
+		        created:function () {
+		          this.getALL();//这里定义这个方法，vue实例之后运行到这里就调用这个函数
+		        },
+				methods : {
+					getALL() {
+						axios.get('../student/all')
+							.then(resp => {
+								this.students=resp.data;
+							}).catch(err => { //
+								console.log('请求失败：' + err.status + ',' + err.statusText);
+							});
+					},
+					getByName() {
+						var name=document.getElementById('select').value;
+						axios.get('../student/'+name)
+							.then(resp => {
+								this.students=resp.data;
+							}).catch(err => { //
+								console.log('请求失败：' + err.status + ',' + err.statusText);
+							});
+					}
+				}
+			});
+		}
+	</script>
+</body>
+</html>
