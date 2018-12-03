@@ -25,6 +25,11 @@ public class StudentRepository {
 		return jdbcTemplate.queryForObject(sql, new Object[] {username}, this::studentRowMapper);
 	}
 	
+	public int saveStudent(Student student) {
+        String sql = "insert into student (username,password,age,sex) values (?,?,?,?)";
+        return jdbcTemplate.update(sql, student.getUsername(),student.getPassword(),student.getAge(),student.getSex());
+    }
+	
 	private Student studentRowMapper(ResultSet rs, int rowNum) {
 		try {
 			return new Student(rs.getInt("uid"), rs.getString("username"), rs.getString("password"), rs.getInt("age"), rs.getInt("sex"));

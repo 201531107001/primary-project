@@ -12,6 +12,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 @Configuration
 @ComponentScan(value={"com.me.repository","com.me.service"})
 public class DataConfig {
+    
 	@Bean
 	public DataSource dataSourceDev() {
 		return new EmbeddedDatabaseBuilder()

@@ -21,4 +21,8 @@ public class StudentService {
 	public Student getStudentByName(String username) {
 		return studentRepository.getStudentByName(username);
 	}
+	
+	public int addStudent(Student student) {
+        return studentRepository.saveStudent(student);
+    }
 }
