@@ -9,6 +9,6 @@ commens-langs-demo：练习commens包的类<br>
 redies-demo:实现对redies key-value数据库的访问<br>
 rocketmq-demo:实现多rocketmq的访问<br>
 shiro-demo：用shiro实现权限认证<br>
-spring-jdbc：1..包含了spring jdbc 2.包含了spring 的profile去使用不同的DataSource 3.包含了spring的事务
-spring-restapi：spring rest api 、spring restTemplate 、spring jdbc 、spring cache
-vue-demo：用vue实现前后端分离
+spring-jdbc：1..包含了spring jdbc 2.包含了spring 的profile去使用不同的DataSource 3.包含了spri<br>ng的事务<br>
+spring-restapi：spring rest api 、spring restTemplate 、spring jdbc 、spring cache<br>
+vue-demo：用vue实现前后端分离<br>
