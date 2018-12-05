@@ -1,26 +1,20 @@
-package com.me.entity;
+package com.me.teacher.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
-@Getter
-@Setter
-@ToString
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Table(name="student")
-public class Student {
+public class Teacher {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String uid;
@@ -28,6 +22,8 @@ public class Student {
 	private String username;
 	@Column
 	private String password;
+	@Column
+	private String wage;
 	@Column
 	private int age;
 	@Column
