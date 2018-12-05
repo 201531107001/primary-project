@@ -2,7 +2,7 @@
 项目中经常用到的一下初级项目
 没有特别指出，用的都是spring
 
-more-database:spring boot实现多数据源配置<br>
+more-database:spring boot实现多数据源配置 使用的是spring data jpa实现<br>
 log4jdbc-demo:使用log4jdbc输出sql日志<br>
 log4j-demo：使用log4j、slf4j输出日志<br>
 commens-langs-demo：练习commens包的类<br>
