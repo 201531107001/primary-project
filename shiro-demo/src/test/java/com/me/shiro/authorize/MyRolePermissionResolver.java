@@ -1,4 +1,4 @@
-package com.me.shiro.test3;
+package com.me.shiro.authorize;
 
 import java.util.Arrays;
 import java.util.Collection;

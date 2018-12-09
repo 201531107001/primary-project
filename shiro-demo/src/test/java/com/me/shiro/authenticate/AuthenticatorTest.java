@@ -1,4 +1,4 @@
-package com.me.shiro.test2;
+package com.me.shiro.authenticate;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;

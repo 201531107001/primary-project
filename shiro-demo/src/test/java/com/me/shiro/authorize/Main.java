@@ -1,4 +1,4 @@
-package com.me.shiro.test3;
+package com.me.shiro.authorize;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;

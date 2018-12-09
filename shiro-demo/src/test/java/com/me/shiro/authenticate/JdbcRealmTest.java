@@ -1,4 +1,4 @@
-package com.me.shiro.test2;
+package com.me.shiro.authenticate;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -7,12 +7,11 @@ import org.apache.shiro.config.IniSecurityManagerFactory;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.Factory;
 
-public class ShiroTest {
-	
+public class JdbcRealmTest {
 	public static void main(String[] args) {
 		// 1、获取 SecurityManager 工厂，此处使用 Ini 配置文件初始化 SecurityManager
 		Factory<org.apache.shiro.mgt.SecurityManager> factory = 
-				new IniSecurityManagerFactory("classpath:shiro-realm2.ini");
+				new IniSecurityManagerFactory("classpath:shiro-jdbc-realm.ini");
 		// 2、得到 SecurityManager 实例 并绑定给 SecurityUtils
 		org.apache.shiro.mgt.SecurityManager securityManager = factory.getInstance();
 		SecurityUtils.setSecurityManager(securityManager);
