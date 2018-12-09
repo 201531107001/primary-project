@@ -23,7 +23,6 @@ public class ShiroTest {
 		
 		//2.解析配置文件，并且返回一些SecurityManger实例
 		SecurityManager securityManager = factory.getInstance();
-		SecurityUtils.setSecurityManager(securityManager);
 		
 		//3.将SecurityManager绑定给SecurityUtils
 		SecurityUtils.setSecurityManager(securityManager);
