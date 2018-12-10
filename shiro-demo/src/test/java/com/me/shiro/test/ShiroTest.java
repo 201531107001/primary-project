@@ -33,8 +33,6 @@ public class ShiroTest {
 		// 测试在应用的当前会话中设置属性
 		Session session = currentUser.getSession();
 		
-		
-		
 		//放进去一个key和一个value
 		session.setAttribute("someKey", "aValue");
 		//根据key拿到value

@@ -99,14 +99,71 @@ DefaultPasswordService  配合 PasswordMatcher 实 实 现 简单的密码加密
         }
         //省略 doGetAuthorizationInfo，具体看代码
         @Override
-        protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws
-            AuthenticationException {
+        protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) 
+            throws AuthenticationException {
             return new SimpleAuthenticationInfo(
                 "wu",
                 passwordService.encryptPassword("123"),
                 getName());
         }
     }
-    为了方便，直接注入一个 passwordService 来加密密码，实际使用时需要在 Service 层使用passwordService 加密密码并存到数据库
+    为了方便，直接注入一个 passwordService 来加密密码，实际使用时需要在 Service 层使用passwordService 
+    加密密码并存到数据库
+
+如上方式的缺点是：salt 保存在散列值中；没有实现如密码重试次数限制。
+HashedCredentialsMatcher 实 实 现 密码验证 服务
+Shiro 提 供 了 CredentialsMatcher 的 散 列 实 现 HashedCredentialsMatcher， 和 之 前 的
+PasswordMatcher 不同的是，它只用于密码验证，且可以提供自己的盐，而不是随机生成盐，
+且生成密码散列值的算法需要自己写，因为能提供自己的盐。
+1、 、 生 成密码 散列值
+此处我们使用 MD5 算法，“密码+盐（用户名+随机数）”的方式生成散列值：
+String algorithmName = "md5";
+String username = "liu";
+String password = "123";
+String salt1 = username;
+String salt2 = new SecureRandomNumberGenerator().nextBytes().toHex();
+int hashIterations = 2;
+SimpleHash hash = new SimpleHash(algorithmName, password, salt1+salt2,hashIterations);
+如果要写用户模块，需要在新增用户/重置密码时使用如上算法保存密码，将生成的密码及
+salt2 存入数据库（因为我们的散列算法是：md5(md5(密码+username+salt2))）
+2、生成 Realm
+protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws
+    AuthenticationException {
+    String username = "liu"; //用户名及 salt1
+    String password = "202cb962ac59075b964b07152d234b70"; //加密后的密码
+    String salt2 = "202cb962ac59075b964b07152d234b70";
+    SimpleAuthenticationInfo ai =
+    new SimpleAuthenticationInfo(username, password, getName());
+    ai.setCredentialsSalt(ByteSource.Util.bytes(username+salt2)); //盐是用户名+随机数
+    return ai;
+}
+
+密码 重试次 数限制：
+如在 1 个小时内密码最多重试 5 次，如果尝试次数超过 5 次就锁定 1 小时，1 小时后可再
+次重试，如果还是重试失败，可以锁定如 1 天，以此类推，防止密码被暴力破解。我们通
+过继承 HashedCredentialsMatcher，且使用 Ehcache 记录重试次数和超时时间。
+public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info) {
+    String username = (String)token.getPrincipal();
+    //retry count + 1
+    Element element = passwordRetryCache.get(username);
+    if(element == null) {
+        element = new Element(username , new AtomicInteger(0));
+        passwordRetryCache.put(element);
+    }
+    AtomicInteger retryCount = (AtomicInteger)element.getObjectValue();
+    if(retryCount.incrementAndGet() > 5) {
+        //if retry count > 5 throw
+        throw new ExcessiveAttemptsException();
+    }
+    boolean matches = super.doCredentialsMatch(token, info);
+    if(matches) {
+        //clear retry count
+        passwordRetryCache.remove(username);
+    }
+    return matches;
+}
+
+
+
 
 
