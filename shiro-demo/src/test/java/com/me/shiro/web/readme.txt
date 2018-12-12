@@ -82,9 +82,38 @@ Shiro 内置了登录（身份验证）的实现：基于表单的和基于 Basi
 2、[urls]部分配置了/role 地址需要走 authcBasic 拦截器，即如果访问/role 时还没有通过身
 份验证那么将弹出如上图的对话框进行登录，登录成功即可访问。
 
+3、 、 基于 表 单的拦截器身份验证
+1、authc 是 org.apache.shiro.web.filter.authc.FormAuthenticationFilter 类型的实例，其用于实
+现基于表单的身份验证；通过 loginUrl 指定当身份验证时的登录表单；usernameParam 指定登录表单提交的用户名参数名
+passwordParam 指定登录表单提交的密码参数名；successUrl指定登录成功后重定向的默认地址（默认是“/”）（如果有
+上一个地址会自动重定向带该地址）；failureKeyAttribute 指定登录失败时的 request 属性 key
+（默认 shiroLoginFailure）；这样可以在登录表单得到该错误 key 显示相应的错误消息；
 
+4 、授权 （角色/ 权限验证）
+    [main]
+    roles.unauthorizedUrl=/unauthorized
+    perms.unauthorizedUrl=/unauthorized
+    [urls]
+    /role=authc,roles[admin]
+    /permission=authc,perms["user:create"]
+通 过 unauthorizedUrl 属 性 指 定 如 果 授 权 失 败 时 重 定 向 到 的 地 址 。 roles 是
+org.apache.shiro.web.filter.authz.RolesAuthorizationFilter 类型的实例，通过参数指定访问时需
+要的角色，如“[admin]”，如果有多个使用“，”分割，且验证时是 hasAllRole 验证，即
+且的关系。Perms 是 org.apache.shiro.web.filter.authz.PermissionsAuthorizationFilter 类型的实
+例，和 roles 类似，只是验证权限字符串
 
-
+5、 、 退出
+[urls]
+/logout=anon
+指定/logout 使用 anon 拦截器即可，即不需要登录即可访问
+Shiro 也提供了 logout 拦截器用于退出，其是 org.apache.shiro.web.filter.authc.LogoutFilter 类
+型的实例，我们可以在 shiro.ini 配置文件中通过如下配置完成退出：
+    [main]
+    logout.redirectUrl=/login
+    [urls]
+    /logout2=logout
+通过 logout.redirectUrl 指定退出后重定向的地址；通过/logout2=logout 指定退出 url 是
+/logout2。这样当我们登录成功后然后访问/logout2 即可退出。
 
 
 
