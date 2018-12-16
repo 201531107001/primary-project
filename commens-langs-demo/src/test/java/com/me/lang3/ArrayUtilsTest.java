@@ -3,8 +3,9 @@ package com.me.lang3;
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Test;
 
-import java.lang.reflect.Array;
-
+/**
+ * 数组工具类
+ */
 public class ArrayUtilsTest {
 	@Test
 	public void test(){
@@ -43,6 +44,9 @@ public class ArrayUtilsTest {
 		// 以两个位置为起点，依次交换长度为n次元素，每次加一
 		ArrayUtils.swap(list,0,2,2);
 		System.out.println(ArrayUtils.toString(list));
+
+		// 剪切数组
+		ArrayUtils.subarray(list,2,5);
 
 	}
 }
