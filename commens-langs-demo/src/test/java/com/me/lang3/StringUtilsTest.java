@@ -109,32 +109,32 @@ public class StringUtilsTest {
 		StringUtils.indexOf("aabaabaa", 'b');// = 2
 		System.out.println(StringUtils.indexOf("cbadf", 'a'));
 	}
-	
+
 	//字符串拼接
 	@Test
-	public void testJoin(){
-		System.out.println(StringUtils.join(new String[]{"a","b","c"},","));
+	public void testJoin() {
+		System.out.println(StringUtils.join(new String[]{"a", "b", "c"}, ","));
 	}
-	
+
 	//判断字符串是否为数字
 	@Test
-	public void testIsNumeric(){
-		
+	public void testIsNumeric() {
+
 		System.out.println(StringUtils.isNumeric("123"));
 	}
-	
+
 	@Test
-	public void testSplic(){
-		
+	public void testSplic() {
+
 		String str = "a b c";
 		System.out.println(StringUtils.split(str)[1]);
-		
+
 		str = "a,b,c";
-		System.out.println(StringUtils.split(str,",")[1]);
+		System.out.println(StringUtils.split(str, ",")[1]);
 	}
-	
+
 	@Test
-	public void testContains(){
+	public void testContains() {
 		System.out.println(StringUtils.contains("abc", "a"));
 	}
 
