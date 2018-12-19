@@ -1,0 +1,35 @@
+                        会话管理
+    Shiro 提供了完整的企业级会话管理功能，不依赖于底层容器（如 web 容器 tomcat），不管
+JavaSE 还是 JavaEE 环境都可以使用，提供了会话管理、会话事件监听、会话存储/持久化、
+容器无关的集群、失效/过期支持、对 Web 的透明支持、SSO 单点登录的支持等特性。即
+直接使用 Shiro 的会话管理可以直接替换如 Web 容器的会话管理。
+
+        会话
+        所谓会话，即用户访问应用时保持的连接关系，在多次交互中应用能够识别出当前访问的
+用户是谁，且可以在多次交互中保存一些数据。如访问一些网站时登录成功后，网站可以
+记住用户，且在退出之前都可以识别当前用户是谁。\
+    Shiro 的会话支持不仅可以在普通的 JavaSE 应用中使用，也可以在 JavaEE 应用中使用，如
+web 应用。且使用方式是一致的。
+    login("classpath:shiro.ini", "zhang", "123");
+    Subject subject = SecurityUtils.getSubject();
+    Session session = subject.getSession();
+登录成功后使用 Subject.getSession()即可获取会话；其等价于 Subject.getSession(true)，即如
+果当前没有创建 Session 对象会创建一个；另外 Subject.getSession(false)，如果当前没有创
+建 Session 则返回 null（不过默认情况下如果启用会话存储功能的话在创建 Subject 时会主
+动创建一个 Session）
+session.getId();获取当前会话的唯一标识
+session.getHost();获取当前 Subject 的主机地址，该地址是通过 HostAuthenticationToken.getHost()提供的
+session.getTimeout();
+session.setTimeout(毫秒);获取/设置当前 Session 的过期时间；如果不设置默认是会话管理器的全局过期时间。
+session.setAttribute("key", "123");
+Assert.assertEquals("123", session.getAttribute("key"));
+session.removeAttribute("key");设置/获取/删除会话属性；在整个会话范围内都可以对这些属性进行操作。
+
+
+
+
+
+
+
+
+
