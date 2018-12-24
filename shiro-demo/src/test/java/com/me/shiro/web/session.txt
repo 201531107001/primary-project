@@ -90,11 +90,31 @@ sessionManager.sessionIdCookieEnabled：是否启用/禁用 Session Id Cookie，
 如果禁用后将不会设置 Session Id Cookie，即默认使用了 Servlet 容器的 JSESSIONID，且通
 过 URL 重写（URL 中的“;JSESSIONID=id”部分）保存 Session Id。
     
-    
-    
-    
-    
-    
-    
-    
+                                    会话监听器 
+会话监听器用于监听会话创建、过期及停止事件：   
+public class MySessionListener1 implements SessionListener {
+    @Override
+    public void onStart(Session session) {//会话创建时触发
+        System.out.println("会话创建：" + session.getId());
+    }
+    @Override
+    public void onExpiration(Session session) {//会话过期时触发
+        System.out.println("会话过期：" + session.getId());
+    }
+    @Override
+    public void onStop(Session session) {//退出/会话过期时触发
+        System.out.println("会话停止：" + session.getId());
+    }
+}    
+如果只想监听某一个事件，可以继承 SessionListenerAdapter 实现：   
+public class MySessionListener2 extends SessionListenerAdapter {
+    @Override
+    public void onStart(Session session) {
+        System.out.println("会话创建：" + session.getId());
+    }
+}   
+在 shiro-web.ini 配置文件中可以进行如下配置设置会话监听器：   
+    sessionListener1=com.github.zhangkaitao.shiro.chapter10.web.listener.MySessionListener1
+    sessionListener2=com.github.zhangkaitao.shiro.chapter10.web.listener.MySessionListener2
+    sessionManager.sessionListeners=$sessionListener1,$sessionListener2    
     
