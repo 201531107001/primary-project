@@ -117,4 +117,78 @@ public class MySessionListener2 extends SessionListenerAdapter {
     sessionListener1=com.github.zhangkaitao.shiro.chapter10.web.listener.MySessionListener1
     sessionListener2=com.github.zhangkaitao.shiro.chapter10.web.listener.MySessionListener2
     sessionManager.sessionListeners=$sessionListener1,$sessionListener2    
-    
+   
+                        会话存储/持久化 
+Shiro 提供 SessionDAO 用于会话的 CRUD，即 DAO（Data Access Object）模式实现：                        
+    //如 DefaultSessionManager 在创建完 session 后会调用该方法；如保存到关系数据库/文件
+          系统/NoSQL 数据库；即可以实现会话的持久化；返回会话 ID；主要此处返回的
+    ID.equals(session.getId())；
+    Serializable create(Session session);
+    //根据会话 ID 获取会话
+    Session readSession(Serializable sessionId) throws UnknownSessionException;
+    //更新会话；如更新会话最后访问时间/停止会话/设置超时时间/设置移除属性等会调用
+    void update(Session session) throws UnknownSessionException;
+    //删除会话；当会话过期/会话停止（如用户退出时）会调用
+    void delete(Session session);
+    //获取当前所有活跃用户，如果用户量多此方法影响性能                        
+AbstractSessionDAO提供了SessionDAO的基础实现，如生成会话ID等；
+CachingSessionDAO提供了对开发者透明的会话缓存的功能，只需要设置相应的 CacheManager 即可；
+MemorySessionDAO 直接在内存中进行会话维护；
+EnterpriseCacheSessionDAO 提供了缓存功能的会话维护，默认情况下使用 MapCache 实现，
+    内部使用 ConcurrentHashMap 保存缓存的会话。 
+                          
+可以通过如下配置设置 SessionDAO：                        
+    sessionDAO=org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO
+    sessionManager.sessionDAO=$sessionDAO                       
+Shiro 提供了使用 Ehcache 进行会话存储，Ehcache 可以配合 TerraCotta 实现容器无关的分布式集群。                        
+首先在 pom.xml 里添加如下依赖：                       
+    <dependency>
+        <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-ehcache</artifactId>
+        <version>1.2.2</version>
+    </dependency>                    
+接着配置 shiro-web.ini 文件：                        
+    sessionDAO=org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO
+    sessionDAO. activeSessionsCacheName=shiro-activeSessionCache
+    sessionManager.sessionDAO=$sessionDAO
+    cacheManager = org.apache.shiro.cache.ehcache.EhCacheManager
+    cacheManager.cacheManagerConfigFile=classpath:ehcache.xml
+    securityManager.cacheManager = $cacheManager                       
+        sessionDAO. activeSessionsCacheName ： 设 置 Session 缓 存 名 字 ， 默 认 就 是shiro-activeSessionCache；
+        cacheManager：缓存管理器，用于管理缓存的，此处使用 Ehcache 实现；
+        cacheManager.cacheManagerConfigFile：设置 ehcache 缓存的配置文件；
+        securityManager.cacheManager：设置 SecurityManager 的 cacheManager，会自动设置实现了
+        CacheManagerAware 接口的相应对象，如 SessionDAO 的 cacheManager；                        
+然后配置 ehcache.xml：                        
+<cache name="shiro-activeSessionCache"
+    maxEntriesLocalHeap="10000"
+    overflowToDisk="false"
+    eternal="false"
+    diskPersistent="false"
+    timeToLiveSeconds="0"
+    timeToIdleSeconds="0"
+    statistics="true"/>                       
+Cache 的名字为 shiro-activeSessionCache，即设置的 sessionDAO 的 activeSessionsCacheName属性值。                        
+另外可以通过如下 ini 配置设置会话 ID 生成器：                       
+    sessionIdGenerator=org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator
+    sessionDAO.sessionIdGenerator=$sessionIdGenerator                      
+用于生成会话 ID，默认就是 JavaUuidSessionIdGenerator，使用 java.util.UUID 生成。
+
+如果自定义实现 SessionDAO，继承 CachingSessionDAO 即可
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        
