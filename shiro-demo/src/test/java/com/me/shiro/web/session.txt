@@ -176,19 +176,66 @@ Cache 的名字为 shiro-activeSessionCache，即设置的 sessionDAO 的 active
 
 如果自定义实现 SessionDAO，继承 CachingSessionDAO 即可
 
+                            会话验证
+Shiro 提供了会话验证调度器，用于定期的验证会话是否已过期，如果过期将停止会话；出
+于性能考虑，一般情况下都是获取会话时来验证会话是否过期并停止会话的；但是如在 web
+环境中，如果用户不主动退出是不知道会话是否过期的，因此需要定期的检测会话是否过
+期，Shiro 提供了会话验证调度器 SessionValidationScheduler 来做这件事情。
+可以通过如下 ini 配置开启会话验证：
+    sessionValidationScheduler=org.apache.shiro.session.mgt.ExecutorServiceSessionValidationScheduler
+    sessionValidationScheduler.interval = 3600000
+    sessionValidationScheduler.sessionManager=$sessionManager
+    sessionManager.globalSessionTimeout=1800000
+    sessionManager.sessionValidationSchedulerEnabled=true
+    sessionManager.sessionValidationScheduler=$sessionValidationScheduler
+sessionValidationScheduler ： 会 话 验 证 调 度 器 ， sessionManager 默 认 就 是 使 用ExecutorServiceSessionValidationScheduler，其使用 JDK 的 ScheduledExecutorService 进行定期调度并验证会话是否过期；
+sessionValidationScheduler.interval：设置调度时间间隔，单位毫秒，默认就是 1 小时；
+sessionValidationScheduler.sessionManager：设置会话验证调度器进行会话验证时的会话管理器；
+sessionManager.globalSessionTimeout：设置全局会话超时时间，默认 30 分钟，即如果 30分钟内没有访问会话将过期；
+sessionManager.sessionValidationSchedulerEnabled：是否开启会话验证器，默认是开启的；
+sessionManager.sessionValidationScheduler ： 设 置 会 话 验 证 调 度 器 ， 默 认 就 是 使 用ExecutorServiceSessionValidationScheduler。
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                        
+                sessionFactory
+sessionFactory 是创建会话的工厂，根据相应的 Subject 上下文信息来创建会话；默认提供
+了 SimpleSessionFactory 用来创建 SimpleSession 会话。
+首先自定义一个 Session：
+public class OnlineSession extends SimpleSession {
+    public static enum OnlineStatus {
+        on_line("在线"), hidden("隐身"), force_logout("强制退出");
+        private final String info;
+        private OnlineStatus(String info) {
+        this.info = info;
+        }
+        public String getInfo() {
+        return info;
+        }
+    }
+    private String userAgent; //用户浏览器类型
+    private OnlineStatus status = OnlineStatus.on_line; //在线状态
+    private String systemHost; //用户登录时系统 IP
+    //省略其他
+}
+OnlineSession 用于保存当前登录用户的在线状态，支持如离线等状态的控制
+接着自定义 SessionFactory：
+public class OnlineSessionFactory implements SessionFactory {
+    @Override
+    public Session createSession(SessionContext initData) {
+        OnlineSession session = new OnlineSession();
+        if (initData != null && initData instanceof WebSessionContext) {
+            WebSessionContext sessionContext = (WebSessionContext) initData;
+            HttpServletRequest  request  =  (HttpServletRequest)
+            sessionContext.getServletRequest();
+            if (request != null) {
+                session.setHost(IpUtils.getIpAddr(request));
+                session.setUserAgent(request.getHeader("User-Agent"));
+                session.setSystemHost(request.getLocalAddr()  +  ":"  +
+                request.getLocalPort());
+            }
+        }
+        return session;
+    }
+}
+根据会话上下文创建相应的 OnlineSession。
+最后在 shiro-web.ini 配置文件中配置：
+    sessionFactory=org.apache.shiro.session.mgt.OnlineSessionFactory
+    sessionManager.sessionFactory=$sessionFactory                        
