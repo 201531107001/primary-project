@@ -21,10 +21,10 @@ public class TestMap {
         students.add(new Student("gqi", "123", 13));
         students.add(new Student("gqj", "123", 15));
         
-//        Map<Integer, List<Student>> groupByAge = students.stream()
-//                .collect(Collectors.groupingBy(s->s.getAge()));
         Map<Integer, List<Student>> groupByAge = students.stream()
-                .collect(Collectors.groupingBy(Student::getAge));
+                .collect(Collectors.groupingBy(s->s.getAge()));
+//        Map<Integer, List<Student>> groupByAge = students.stream()
+//                .collect(Collectors.groupingBy(Student::getAge));
         
         Set<Integer> set = groupByAge.keySet();
         for (Integer age : set) {
