@@ -9,7 +9,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FuleUtilsTest {
+public class FileUtilsTest {
 
 	@Test
 	public void testWriteLines(){
