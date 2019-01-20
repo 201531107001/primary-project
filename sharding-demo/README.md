@@ -1,0 +1,10 @@
+使用sharding-jdbc练习分库分表查询  
+学习网址:  
+https://www.cnblogs.com/yeahwell/p/7920383.html  
+https://blog.csdn.net/varyall/article/details/81704908  
+https://blog.csdn.net/yangstarss/article/details/80177605  
+https://www.jianshu.com/p/3b2ab87b0de7  
+https://blog.csdn.net/u010309596/article/details/80015850  
+https://blog.csdn.net/tianyaleixiaowu/article/details/70242971  
+https://blog.csdn.net/vbirdbest/article/details/81176134  
+https://blog.csdn.net/u012394095/article/details/81301034  

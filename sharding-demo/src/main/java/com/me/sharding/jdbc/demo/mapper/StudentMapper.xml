@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.me.sharding.jdbc.demo.mapper.StudentMapper">
+  <resultMap id="BaseResultMap" type="com.me.sharding.jdbc.demo.entity.Student">
+    <id column="name" jdbcType="VARCHAR" property="name" />
+    <result column="age" jdbcType="INTEGER" property="age" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    name, age
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_student
+    where name = #{name,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectAllStudent" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_student
+  </select>
+  
+  <select id="selectAllStudentByAge" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_student where age = #{age}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_student
+    where name = #{name,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.me.sharding.jdbc.demo.entity.Student">
+    insert into tb_student (name, age)
+    values (#{name,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.me.sharding.jdbc.demo.entity.Student">
+    insert into tb_student
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        name,
+      </if>
+      <if test="age != null">
+        age,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null">
+        #{age,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.me.sharding.jdbc.demo.entity.Student">
+    update tb_student
+    <set>
+      <if test="age != null">
+        age = #{age,jdbcType=INTEGER},
+      </if>
+    </set>
+    where name = #{name,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.me.sharding.jdbc.demo.entity.Student">
+    update tb_student
+    set age = #{age,jdbcType=INTEGER}
+    where name = #{name,jdbcType=VARCHAR}
+  </update>
+</mapper>
