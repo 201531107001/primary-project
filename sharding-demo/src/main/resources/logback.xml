@@ -40,7 +40,7 @@
     <logger name="jdbc.sqltiming" level="ERROR" />
     <logger name="jdbc.sqlonly" level="INFO" />
 
-    <root level="ERROR">
+    <root level="INFO">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="sqllog" />
     </root>
