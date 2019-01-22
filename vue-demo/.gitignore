@@ -12,8 +12,6 @@ target/
 .project
 .tern-project
 local.properties
-.artery
-artery.xml
 MANIFEST.MF
 
 
