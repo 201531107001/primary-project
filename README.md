@@ -13,4 +13,4 @@ spring-jdbc：1..包含了spring jdbc 2.包含了spring 的profile去使用不�
 spring-restapi：spring rest api 、spring restTemplate 、spring jdbc 、spring cache  
 vue-demo：用vue实现前后端分离  
 sharding-demo：spring boot、mybats、sharding-jdbc实现数据库分表  
-spring-primary:学习spring的基础(依赖注入)
+spring-primary:学习spring的基础(依赖注入DI、面向切面AOP)  
