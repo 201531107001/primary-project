@@ -14,3 +14,4 @@ spring-restapi：spring rest api 、spring restTemplate 、spring jdbc 、spring
 vue-demo：用vue实现前后端分离  
 sharding-demo：spring boot、mybats、sharding-jdbc实现数据库分表  
 spring-primary:学习spring的基础(依赖注入DI、面向切面AOP)  
+swagger-demo：spring boot 集成swagger自动生成接口文档  
