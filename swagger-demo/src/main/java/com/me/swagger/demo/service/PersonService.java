@@ -1,7 +1,6 @@
 package com.me.swagger.demo.service;
 
 import com.me.swagger.demo.entity.Person;
-import io.swagger.models.auth.In;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,5 +23,9 @@ public class PersonService {
 			list.add(entry.getValue());
 		}
 		return list;
+	}
+
+	public void save(Person person){
+		map.put(person.getId(),person);
 	}
 }
