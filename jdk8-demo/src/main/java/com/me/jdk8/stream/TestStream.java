@@ -3,6 +3,7 @@ package com.me.jdk8.stream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -11,11 +12,22 @@ public class TestStream {
         List<Integer> list = Arrays.asList(1, 5, 2, 3, 6, 4, 7, 8, 9);
         List<Integer> list2 = new ArrayList<>();
 
-        Stream.of("one", "two", "three", "four").filter(e -> e.length() > 3)
+        //peek操作完后还要返回这个流
+        List<String> strings = Stream.of("one", "two", "three", "four").filter(e -> e.length() > 3)
                 .peek(e -> System.out.println("Filtered value: " + e))
                 .map(String::toUpperCase)
                 .peek(e -> System.out.println("Mapped value: " + e))
                 .collect(Collectors.toList());
+        System.out.println(strings);
+        
+        // 流的聚合操作
+        List<People> peoples = Arrays.asList(new People("gqm",5)
+                ,new People("gqd",2),new People("gqp",5)
+                ,new People("gqc",3),new People("gql",5)
+                ,new People("gqs",3),new People("gqg",1));
+        Map<Integer, List<People>> peopleGroupBuAge = peoples.stream()
+                .collect(Collectors.groupingBy(People::getAge));
+        System.out.println(peopleGroupBuAge);
 
         System.out.println("====================================");
         Stream<List<Integer>> inputStream = 
