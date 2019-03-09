@@ -17,6 +17,7 @@ public class TestStream {
                 .peek(e -> System.out.println("Mapped value: " + e))
                 .collect(Collectors.toList());
 
+        System.out.println("====================================");
         Stream<List<Integer>> inputStream = 
                 Stream.of(Arrays.asList(1), 
                         Arrays.asList(2, 3), 
