@@ -3,6 +3,8 @@ package com.me.config;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.shiro.cache.CacheManager;
+import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -22,8 +24,23 @@ public class ShiroConfig {
 	}
 	
 	@Bean("myShiroRealm")
-	public AuthorizingRealm getAuthorizingRealm() {
-		return new MyShiroRealm();
+	public AuthorizingRealm getAuthorizingRealm(CacheManager cacheManager) {
+	    MyShiroRealm realm = new MyShiroRealm();
+	    realm.setCachingEnabled(true);
+	    realm.setAuthenticationCachingEnabled(true);
+	    realm.setAuthenticationCacheName("authenticationCacheName");
+	    realm.setAuthorizationCachingEnabled(true);
+	    realm.setAuthorizationCacheName("authorizationCacheName");
+	    realm.setCacheManager(cacheManager);
+		return realm;
+	}
+	
+	@Bean("cacheManager")
+	public CacheManager getCacheManager() {
+	    EhCacheManager cacheManager = new EhCacheManager();
+	    cacheManager.setCacheManager(new net.sf.ehcache.CacheManager());
+	    cacheManager.setCacheManagerConfigFile("ehcache.xml");
+	    return cacheManager;
 	}
 	
 	@Bean("shiroFilter")

@@ -13,13 +13,14 @@ import org.apache.shiro.util.Factory;
 
 /**
  * 用户名+随机数生成盐
+ * 登录次数的限制
  * @author 清明
  *
  */
 public class JdbcMain {
     public static void main(String[] args) {
         Factory<SecurityManager> factory = 
-                new IniSecurityManagerFactory("classpath:shiro-jdbc-hashedCredentialsMatcher.ini");
+                new IniSecurityManagerFactory("classpath:shiro-code-jdbc-hashedCredentialsMatcher.ini");
         SecurityManager securityManager = factory.getInstance();
         SecurityUtils.setSecurityManager(securityManager);
         
@@ -37,14 +38,16 @@ public class JdbcMain {
                     new UsernamePasswordToken("gqm", password);
             try {
                 subject.login(token);
-            } catch (IncorrectCredentialsException e) {
-                System.out.println("密码错误");
             } catch (ExcessiveAttemptsException e) {
-                System.out.println("已错误登录5次");
-            }
+                System.out.println("已错误登录5次，一个小时后重新登录");
+                break;
+            }catch (IncorrectCredentialsException e) {
+                System.out.println("密码错误");
+            }            
             
             if(subject.isAuthenticated()) {
                 System.out.println("登录成功");
+                subject.logout();
             }
         }
         

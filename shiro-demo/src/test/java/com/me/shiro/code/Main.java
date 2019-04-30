@@ -13,7 +13,7 @@ public class Main {
     public static void main(String[] args) {
         //PasswordMatcher
         Factory<SecurityManager> factory = 
-                new IniSecurityManagerFactory("classpath:shiro-passwordservice.ini");
+                new IniSecurityManagerFactory("classpath:shiro-code-passwordservice.ini");
         SecurityManager securityManager = factory.getInstance();
         SecurityUtils.setSecurityManager(securityManager);
         

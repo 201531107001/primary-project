@@ -11,7 +11,7 @@ public class JdbcRealmTest {
 	public static void main(String[] args) {
 		// 1、获取 SecurityManager 工厂，此处使用 Ini 配置文件初始化 SecurityManager
 		Factory<org.apache.shiro.mgt.SecurityManager> factory = 
-				new IniSecurityManagerFactory("classpath:shiro-jdbc-realm.ini");
+				new IniSecurityManagerFactory("classpath:shiro-authenticator-jdbc-realm.ini");
 		// 2、得到 SecurityManager 实例 并绑定给 SecurityUtils
 		org.apache.shiro.mgt.SecurityManager securityManager = factory.getInstance();
 		SecurityUtils.setSecurityManager(securityManager);
