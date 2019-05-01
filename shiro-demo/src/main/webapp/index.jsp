@@ -12,5 +12,6 @@
 <a href="doupdate">update</a><br>
 <a href="dodelete">delete</a><br>
 <a href="dolook">look</a><br>
+<a href="hello">hello</a><br>
 </body>
 </html>

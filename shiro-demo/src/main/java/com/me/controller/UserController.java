@@ -7,14 +7,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.AuthorizationException;
+import org.apache.shiro.authz.UnauthenticatedException;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.context.request.NativeWebRequest;
 
 import com.me.service.ShiroService;
 
@@ -57,5 +65,31 @@ public class UserController {
 		//通过页面上显示的信息查看请求是否被拦截
 		model.addAttribute("page", act);
 		return act;
+	}
+	
+	@RequiresAuthentication
+	@RequiresPermissions("add")
+	@RequestMapping("/hello")
+	public String hello() {
+	    return "hello";
+	}
+	
+	/**
+	 * 异常处理器
+	 * @param request
+	 * @param e
+	 * @param model
+	 * @return
+	 */
+	@ExceptionHandler({AuthorizationException.class})
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	public  String  processUnauthenticatedException(NativeWebRequest  request,
+	        AuthorizationException e,Model model) {
+	    System.out.println(e.getClass().getName());
+	    if(e instanceof UnauthenticatedException) {
+	        return "login";
+	    }
+	    model.addAttribute("msg", e.getMessage());
+    	return "error";
 	}
 }

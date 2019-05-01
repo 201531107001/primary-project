@@ -1,6 +1,6 @@
 insert into SHIRO_USER values('gqm','990219');
-insert into SHIRO_USER values('gql','921015');
-insert into SHIRO_USER values('gqp','940415');
+insert into SHIRO_USER values('gql','990219');
+insert into SHIRO_USER values('gqp','990219');
 insert into SHIRO_USER values('guest','guest');
 
 insert into SHIRO_USER_ROLE values('gqm','admin');

@@ -10,6 +10,7 @@
 	<form action="login" method="post">
 		<label>username:</label><input type="text" name="username"/><br>
 		<label>password:</label><input type="password" name="password"/><br>
+		<label>rememberMe:</label><input type="checkbox" value="rememberMe" name="rememberMe"/><br>
 		<input type="submit" value="Login"/>
 	</form>
 </body>
