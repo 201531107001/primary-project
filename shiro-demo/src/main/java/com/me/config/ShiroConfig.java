@@ -3,6 +3,8 @@ package com.me.config;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.Filter;
+
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.codec.Base64;
@@ -11,6 +13,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
+import org.apache.shiro.web.filter.authz.SslFilter;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
@@ -89,6 +92,13 @@ public class ShiroConfig {
 	    return filter;
 	}
 	
+	@Bean
+	public SslFilter getSslFilter() {
+	    SslFilter sslFilter = new SslFilter();
+	    sslFilter.setPort(8443);
+	    return sslFilter;
+	}
+	
 	public static void main(String[] args) {
 	    System.out.println(new String(Base64.decode("4AvVhmFLUs0KTA3Kprsdag==")));
 	    System.out.println(new String(Base64.decode(new String(Base64.encode("990219".getBytes())))));
@@ -96,7 +106,8 @@ public class ShiroConfig {
 	
 	@Bean("shiroFilter")
 	public ShiroFilterFactoryBean getShiroFilterFactoryBean(
-				@Qualifier("securityManager") SecurityManager securityManager) {
+				@Qualifier("securityManager") SecurityManager securityManager,
+				SslFilter sslFilter) {
 		ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
 		shiroFilter.setSecurityManager(securityManager);
 		//去登录的地址
@@ -106,8 +117,13 @@ public class ShiroConfig {
 		//验证失败的跳转地址
 		shiroFilter.setUnauthorizedUrl("/error.jsp");
 		
+		Map<String, Filter> fMap = new HashMap<>();
+		fMap.put("ssl", sslFilter);
+		shiroFilter.setFilters(fMap);
+		
 		Map<String, String> map = new HashMap<>();
 		map.put("/index.jsp", "anon");
+		map.put("/gologin", "ssl,anon");
 		map.put("/login", "anon");
 		map.put("/logout", "anon");
 		map.put("/error.jsp", "anon");
